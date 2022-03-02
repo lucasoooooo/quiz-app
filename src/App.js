@@ -13,7 +13,8 @@ export default function App() {
   //2. Tally correct answers with "Check Answers" Button
   //3. Play again 
   const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||{})
-
+  const [choices, setChoices] = React.useState(
+    Array.from({length: questions.length}, () => ["null"]))
   // const [gameOver, setGameOver] = React.useState(false)
   const [answers, setAnswers] = React.useState(
     Array.from({length: questions.length}, () => null))
@@ -21,12 +22,14 @@ export default function App() {
   React.useEffect(() => {
     // console.log(questions)
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
+    var arr =[]
+    for (let i=0; i<questions.length; i++){
+      arr.push(shuffleAnswers(
+        [questions[i].correct_answer, ...questions[i].incorrect_answers]))  
+    }
+    setChoices(arr)
   }, [])
-
-  // function handleAnswer(event){
-  //   setAnswers(event.target.value)
-  // }
-
+  
   // New Quiz
   // React.useEffect(()=>{
   //   async function getQuestions(){
@@ -42,9 +45,23 @@ export default function App() {
       number = {index}
       key = {index}
       question = {q.question}
-      answers = {[q.correct_answer, ...q.incorrect_answers]}
+
+      answers = {choices[index]}//shuffleAnswers([q.correct_answer, ...q.incorrect_answers])}
       onChange = {(change) => handleAnswers(change.target.value, change.target.name)}
     />)
+  //Randomizes order of answers
+  function shuffleAnswers(arr){
+    let currentIndex = arr.length
+    let randomIndex
+    while (currentIndex != 0){
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex --;
+        [arr[currentIndex], arr[randomIndex]] = [
+            arr[randomIndex], arr[currentIndex]]
+    }
+    return arr
+}
+
   function handleAnswers(ans, index){
     setAnswers(function(oldAnswer){
       return oldAnswer.map(function(o,i){

@@ -13,6 +13,7 @@ export default function Questions(props){
             <input onChange={props.onChange} type="radio" id={newAnswers} name={props.number} value={newAnswers}/>
         </div>)
     }) 
+    
        
         //Fixes wierd encoding problem, ex &#039; instead of '
     var newQuestion = props.question.replace(/&#(\d+);/g, (match, dec) => {
