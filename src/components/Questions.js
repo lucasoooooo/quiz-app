@@ -1,25 +1,28 @@
 import React from "react";
 
 export default function Questions(props){
-    const choices = props.answers.map(a =>
+    const choices = props.answers.map(function(a){
+        //Fix encoding problems
+        var newAnswers = a.replace(/&#(\d+);/g, (match, dec) => {
+            return String.fromCharCode(dec)});
+        newAnswers = newAnswers.replace(/&amp;/g, () =>"&")
+        newAnswers = newAnswers.replace(/&quot;/g, () =>"\"")
+        return(
         <div key={props.number+a}>
-            <label >{a}</label>
-            <input type="radio" id={a} name={props.number} value={a}/>
-        </div>
-        )
+            <label >{newAnswers}</label>
+            <input onChange={props.onChange} type="radio" id={newAnswers} name={props.number} value={newAnswers}/>
+        </div>)
+    }) 
+       
         //Fixes wierd encoding problem, ex &#039; instead of '
-    var test = props.question.replace(/&#(\d+);/g, (match, dec) => {
-        return String.fromCharCode(dec);
-    });
-
-     test = test.replace(/&quot;/g, () =>"\"")
+    var newQuestion = props.question.replace(/&#(\d+);/g, (match, dec) => {
+        return String.fromCharCode(dec)});
+    newQuestion = newQuestion.replace(/&quot;/g, () =>"\"")
+    newQuestion = newQuestion.replace(/&amp;/g, () =>"&")
     
-    // const test = props.question.replace(/&#(\d+);/g, function(match, dec) {
-    //     return String.fromCharCode(dec);
-    // });
     
     return (<div className="questions">
-        <p> {`Question ${props.number+1}: ${test} `}</p>
+        <p> {`Question ${props.number+1}: ${newQuestion} `}</p>
         <div className="answers-container">
             <p>Answer:</p>
             

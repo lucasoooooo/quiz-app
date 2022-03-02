@@ -13,13 +13,13 @@ export default function App() {
   //2. Tally correct answers with "Check Answers" Button
   //3. Play again 
   const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||{})
-  // const [gameOver, setGameOver] = React.useState(false)
-  // const [answers, setAnswers] = React.useState()
-  console.log("Component rendered")
 
+  // const [gameOver, setGameOver] = React.useState(false)
+  const [answers, setAnswers] = React.useState(
+    Array.from({length: questions.length}, () => null))
   
   React.useEffect(() => {
-    
+    // console.log(questions)
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
   }, [])
 
@@ -43,20 +43,44 @@ export default function App() {
       key = {index}
       question = {q.question}
       answers = {[q.correct_answer, ...q.incorrect_answers]}
-
+      onChange = {(change) => handleAnswers(change.target.value, change.target.name)}
     />)
+  function handleAnswers(ans, index){
+    setAnswers(function(oldAnswer){
+      return oldAnswer.map(function(o,i){
+          if (i == index){
+            return ans
+          }
+          else{
+            return o
+          }
+        })
+    })
+  }
+
   function handleSubmit(event){
-    console.log(event.target.value)
+    // console.log(event.target.value)
+    var numberRight = 0
+    for (let i=0; i<answers.length; i++){
+      // console.log("Checking Answer # ",answers[i])
+      if (answers[i] == questions[i].correct_answer){
+        numberRight+=1
+      }
+    }
+    console.log("Number correct: ", numberRight)
   }
   
   return (
     <div className="app">
       <Header/>
       <br></br>
+      <form onSubmit={handleSubmit}>
       <div className="questions-container">
         {questionsElement}
       </div>
-      {/* <pre>{JSON.stringify(questions, null, 2)}</pre> */}
+ 
+      </form>
+
       <h2 className="submit" onClick={handleSubmit}>Submit</h2>
      
     </div>
