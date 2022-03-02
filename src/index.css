@@ -36,7 +36,7 @@ header{
   
 }
 .submit{
-  background-color: rgb(177, 247, 97);
+  background-color: rgb(154, 248, 46);
   padding: 5px;
   border-radius: 5px;
   width:fit-content;
@@ -49,4 +49,14 @@ header{
   display:grid;
   grid-template: auto auto / repeat(3, 1fr);
   padding:10px;
+}
+.new-quiz{
+  background-color: rgb(224, 141, 16);
+  padding: 5px;
+  border-radius: 5px;
+  width:fit-content;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  cursor:pointer;
 }

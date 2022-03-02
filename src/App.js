@@ -119,7 +119,7 @@ export default function App() {
  
       </form>
       <div className="Footer">
-        <h2 className="submit" onClick={handleSubmit}>Submit</h2>
+        <h2 className="submit" onClick={handleSubmit}>Check Answers</h2>
         {score!=null && <h2 className="score">{`Score: ${score}/${questions.length}`}</h2>}
         <h2 className="new-quiz" onClick={handleNewQuiz}>New Quiz</h2>
       </div>
