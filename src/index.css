@@ -44,5 +44,9 @@ header{
   display: flex;
   align-items: center;
   cursor:pointer;
-
+}
+.footer{
+  display:grid;
+  grid-template: auto auto / repeat(3, 1fr);
+  padding:10px;
 }

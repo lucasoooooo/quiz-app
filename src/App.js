@@ -15,12 +15,14 @@ export default function App() {
   const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||{})
   const [choices, setChoices] = React.useState(
     Array.from({length: questions.length}, () => ["null"]))
-  // const [gameOver, setGameOver] = React.useState(false)
   const [answers, setAnswers] = React.useState(
     Array.from({length: questions.length}, () => null))
-  
+  const [score, setScore] = React.useState(null)
+
+
   React.useEffect(() => {
-    // console.log(questions)
+    
+    console.log("Rendered Questions: ",questions)
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
     var arr =[]
     for (let i=0; i<questions.length; i++){
@@ -28,7 +30,7 @@ export default function App() {
         [questions[i].correct_answer, ...questions[i].incorrect_answers]))  
     }
     setChoices(arr)
-  }, [])
+  }, [questions])
   
   // New Quiz
   // React.useEffect(()=>{
@@ -75,7 +77,7 @@ export default function App() {
     })
   }
 
-  function handleSubmit(event){
+  function handleSubmit(){
     // console.log(event.target.value)
     var numberRight = 0
     for (let i=0; i<answers.length; i++){
@@ -84,7 +86,26 @@ export default function App() {
         numberRight+=1
       }
     }
-    console.log("Number correct: ", numberRight)
+    setScore(numberRight)
+  }
+
+  function handleNewQuiz(){
+    console.log(questions)
+    async function getQuestions(){
+      const res = await fetch("https://opentdb.com/api.php?amount=10&category=28")
+      const data = await res.json()
+      setQuestions(data.results)
+    }
+    getQuestions()
+    console.log(questions)
+    localStorage.setItem("apiQuestions", JSON.stringify(questions))
+    var arr =[]
+    for (let i=0; i<questions.length; i++){
+      arr.push(shuffleAnswers(
+        [questions[i].correct_answer, ...questions[i].incorrect_answers]))  
+    }
+    setChoices(arr)
+    console.log(choices)
   }
   
   return (
@@ -97,9 +118,11 @@ export default function App() {
       </div>
  
       </form>
-
-      <h2 className="submit" onClick={handleSubmit}>Submit</h2>
-     
+      <div className="Footer">
+        <h2 className="submit" onClick={handleSubmit}>Submit</h2>
+        {score!=null && <h2 className="score">{`Score: ${score}/${questions.length}`}</h2>}
+        <h2 className="new-quiz" onClick={handleNewQuiz}>New Quiz</h2>
+      </div>
     </div>
   );
 }
