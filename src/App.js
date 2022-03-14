@@ -30,6 +30,7 @@ export default function App() {
     setChoices(arr)
   }, [questions])
   
+  console.log(questions)
   const questionsElement =
    questions.map((q, index) =>
     <Questions
