@@ -21,8 +21,6 @@ export default function App() {
 
 
   React.useEffect(() => {
-    
-    console.log("Rendered Questions: ",questions)
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
     var arr =[]
     for (let i=0; i<questions.length; i++){
@@ -32,22 +30,12 @@ export default function App() {
     setChoices(arr)
   }, [questions])
   
-  // New Quiz
-  // React.useEffect(()=>{
-  //   async function getQuestions(){
-  //     const res = await fetch("https://opentdb.com/api.php?amount=10&category=28")
-  //     const data = await res.json()
-  //     setQuestions(data.results)
-  //   }
-  //   getQuestions()  
-  // } , [])
-
-  const questionsElement = questions.map((q, index) =>
+  const questionsElement =
+   questions.map((q, index) =>
     <Questions
       number = {index}
       key = {index}
       question = {q.question}
-
       answers = {choices[index]}//shuffleAnswers([q.correct_answer, ...q.incorrect_answers])}
       onChange = {(change) => handleAnswers(change.target.value, change.target.name)}
     />)
@@ -55,7 +43,7 @@ export default function App() {
   function shuffleAnswers(arr){
     let currentIndex = arr.length
     let randomIndex
-    while (currentIndex != 0){
+    while (currentIndex > 0){
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex --;
         [arr[currentIndex], arr[randomIndex]] = [
@@ -67,7 +55,7 @@ export default function App() {
   function handleAnswers(ans, index){
     setAnswers(function(oldAnswer){
       return oldAnswer.map(function(o,i){
-          if (i == index){
+          if (index == parseInt(i)){
             return ans
           }
           else{
@@ -78,26 +66,23 @@ export default function App() {
   }
 
   function handleSubmit(){
-    // console.log(event.target.value)
     var numberRight = 0
     for (let i=0; i<answers.length; i++){
-      // console.log("Checking Answer # ",answers[i])
-      if (answers[i] == questions[i].correct_answer){
+      if (answers[i] === questions[i].correct_answer){
         numberRight+=1
       }
+      console.log(`Question ${i+1} was ${questions[i].correct_answer}, you answered ${answers[i]}`)
     }
     setScore(numberRight)
   }
 
   function handleNewQuiz(){
-    console.log(questions)
     async function getQuestions(){
       const res = await fetch("https://opentdb.com/api.php?amount=10&category=28")
       const data = await res.json()
       setQuestions(data.results)
     }
     getQuestions()
-    console.log(questions)
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
     var arr =[]
     for (let i=0; i<questions.length; i++){
@@ -105,7 +90,6 @@ export default function App() {
         [questions[i].correct_answer, ...questions[i].incorrect_answers]))  
     }
     setChoices(arr)
-    console.log(choices)
   }
   
   return (
