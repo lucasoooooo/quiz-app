@@ -12,7 +12,7 @@ export default function App() {
   //1. Two screens, Start and quesitons
   //2. Tally correct answers with "Check Answers" Button
   //3. Play again 
-  const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||{})
+  const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||[])
   const [choices, setChoices] = React.useState(
     Array.from({length: questions.length}, () => ["null"]))
   const [answers, setAnswers] = React.useState(
