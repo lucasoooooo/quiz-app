@@ -12,7 +12,20 @@ export default function App() {
   //1. Two screens, Start and quesitons
   //2. Tally correct answers with "Check Answers" Button
   //3. Play again 
-  const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||[])
+  const [questions, setQuestions] = React.useState(JSON.parse(localStorage.getItem("apiQuestions"))||[
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]},
+    {category: '', type: '', difficulty: '', question: 'Question did not load', correct_answer: 'T', incorrect_answers:["F"]}
+  ])
+
+  
   const [choices, setChoices] = React.useState(
     Array.from({length: questions.length}, () => ["null"]))
   const [answers, setAnswers] = React.useState(
@@ -29,10 +42,8 @@ export default function App() {
     }
     setChoices(arr)
   }, [questions])
-  
   console.log(questions)
-  const questionsElement =
-   questions.map((q, index) =>
+  const questionsElement = questions.map((q, index) =>
     <Questions
       number = {index}
       key = {index}
@@ -56,7 +67,7 @@ export default function App() {
   function handleAnswers(ans, index){
     setAnswers(function(oldAnswer){
       return oldAnswer.map(function(o,i){
-          if (index == parseInt(i)){
+          if (i === parseInt(index)){
             return ans
           }
           else{
@@ -72,7 +83,6 @@ export default function App() {
       if (answers[i] === questions[i].correct_answer){
         numberRight+=1
       }
-      console.log(`Question ${i+1} was ${questions[i].correct_answer}, you answered ${answers[i]}`)
     }
     setScore(numberRight)
   }

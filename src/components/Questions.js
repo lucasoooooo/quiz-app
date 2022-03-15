@@ -16,7 +16,8 @@ export default function Questions(props){
     
        
         //Fixes wierd encoding problem, ex &#039; instead of '
-    var newQuestion = props.question.replace(/&#(\d+);/g, (match, dec) => {
+    
+    var newQuestion = props.question.replace(/&#(\d+);/g, (_, dec) => {
         return String.fromCharCode(dec)});
     newQuestion = newQuestion.replace(/&quot;/g, () =>"\"")
     newQuestion = newQuestion.replace(/&amp;/g, () =>"&")
