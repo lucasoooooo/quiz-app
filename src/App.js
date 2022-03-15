@@ -82,7 +82,9 @@ export default function App() {
       if (answers[i] === questions[i].correct_answer){
         numberRight+=1
       }
+      console.log(`Question ${i+1} answer: ${questions[i].correct_answer}, you selected ${answers[i]}`)
     }
+    
     setScore(numberRight)
   }
 
