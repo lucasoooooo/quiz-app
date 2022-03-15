@@ -31,7 +31,9 @@ export default function App() {
   const [answers, setAnswers] = React.useState(
     Array.from({length: questions.length}, () => null))
   const [score, setScore] = React.useState(null)
-  
+  React.useEffect(() =>{
+    handleNewQuiz()
+  },[])
   React.useEffect(() => {
     localStorage.setItem("apiQuestions", JSON.stringify(questions))
     var arr =[]
